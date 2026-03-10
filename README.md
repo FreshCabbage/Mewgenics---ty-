@@ -1,110 +1,94 @@
-# Mewgenics《ty中文翻译》数据回填包
+# Mewgenics《ty中文翻译》汉化包
 
-这是一份 **ty中文翻译** 数据包，用来区分未来可能出现的官方汉化版本。
 
-对外发布时建议统一称呼为：
 
-- `Mewgenics《ty中文翻译》`
-- `Mewgenics《ty中文翻译》`
+适合：
 
-这个包只包含 3 类东西：
+- 已经有原版游戏
+- 不想下载完整替换包
+- 愿意在自己电脑上本地生成汉化版 `resources.gpak`
 
-- 你的 DeepSeek 翻译结果 CSV
-- 你的 DeepSeek 翻译结果 JSON
-- 一个把翻译结果回填到游戏文本资源里的脚本
+## 这个包包含什么
 
-## 包内文件
-
-- `mewgenics_ty_zh_translation_v17.csv`
-  - 主要翻译结果
-  - 推荐优先使用这个文件回填
-
-- `mewgenics_ty_zh_translation_v17.json`
-  - `key -> zh` 形式的补丁映射
-  - 适合做人工查阅或二次处理
-
+- `mewgenics_gpak.py`
 - `mewgenics_import_ty_translation_csv.py`
-  - 回填脚本
-  - 会把 CSV 中的 `zh` 回填到：
-    - `data/text/combined.csv`
-    - `data/catnames_female_en.txt`
-    - `data/catnames_male_en.txt`
-    - `data/catnames_neutral_en.txt`
+- `mewgenics_ty_zh_translation_v17.csv`
+- `应用_ty中文翻译.bat`
 
-## 前提目录
+## 你需要准备什么
 
-这个脚本不会自动解包 GPAK。
+1. 你自己的原版游戏目录
+2. 游戏目录里有：
+   - `Mewgenics.exe`
+   - `resources.gpak`
+3. 电脑安装了 Python 3
 
-你需要先有一份已经解包好的资源目录，例如：
+## 最简单用法
 
-```text
-extracted/
-  data/
-    text/
-      combined.csv
-    catnames_female_en.txt
-    catnames_male_en.txt
-    catnames_neutral_en.txt
-```
+### 第 1 步
 
-如果你已经有当前项目里的解包目录，那就是：
+把这个轻量包里的所有文件，复制到你的游戏目录里。
 
-```text
-/Users/ty/Documents/New project/work/mewgenics/extracted
-```
+也就是复制到和下面这些文件同一个目录：
 
-## 基本用法
+- `Mewgenics.exe`
+- `resources.gpak`
 
-```bash
-python3 mewgenics_import_ty_translation_csv.py \
-  mewgenics_ty_zh_translation_v17.csv \
-  /path/to/extracted \
-  /path/to/output_patch
-```
+### 第 2 步
 
-执行后，会在 `/path/to/output_patch` 生成：
+双击运行：
 
-- `data/text/combined.csv`
-- `data/catnames_female_en.txt`
-- `data/catnames_male_en.txt`
-- `data/catnames_neutral_en.txt`
+- `应用_ty中文翻译.bat`
 
-这些文件就是可直接用于回包的补丁目录。
+### 第 3 步
 
-## 推荐用法
+脚本跑完后，游戏目录里会多出一个新文件：
 
-如果你已经有一份人工校过、已有部分中文的 `combined.csv`，推荐把它作为基底，这样新翻译只会补空白，不会覆盖你现有的术语和已校对文本。
+- `resources_ty中文翻译.gpak`
 
-```bash
-python3 mewgenics_import_ty_translation_csv.py \
-  mewgenics_ty_zh_translation_v17.csv \
-  /path/to/extracted \
-  /path/to/output_patch \
-  --combined-src /path/to/curated_combined.csv
-```
+### 第 4 步
 
-例如当前项目里推荐的基底是：
+把原来的：
 
-```text
-/Users/ty/Documents/New project/work/mewgenics/patches/data/text/combined.csv
-```
+- `resources.gpak`
 
-## 当前脚本行为
+先备份一份，比如改名成：
 
-- 对 `combined.csv`
-  - 如果基底里某行已经有 `zh`，默认保留
-  - 如果基底里该行 `zh` 为空，则用 CSV 里的翻译补上
+- `resources_backup.gpak`
 
-- 对 3 个名字库
-  - 会按行号对应回填中文名称
+然后把新生成的：
 
-## 不包含的内容
+- `resources_ty中文翻译.gpak`
 
-这个包不包含：
+改名成：
 
-- GPAK 解包脚本
-- GPAK 回包脚本
-- 发布到 `XDISK` 的脚本
-- 发布到 GitHub 的脚本
+- `resources.gpak`
 
-如果你只是想把自己的翻译数据单独放到 GitHub，这个包已经够用了。
+最后启动游戏。
+
+## 语言显示名
+
+进入游戏设置后，语言里应该显示：
+
+- `ty中文翻译`
+
+这样可以和未来可能出现的官方中文区分开。
+
+## 注意
+
+- 这个包不会联网
+- 它只会读取你本地的原版 `resources.gpak`
+- 然后在本地生成一个新的汉化版资源包
+- 默认不会直接覆盖原文件
+
+## 如果运行失败
+
+最常见原因是：
+
+- 没装 Python 3
+- 没把文件放进游戏目录
+- 游戏目录里没有 `resources.gpak`
+
+## 最后一条提醒
+
+这是玩家汉化，不是官方汉化。
